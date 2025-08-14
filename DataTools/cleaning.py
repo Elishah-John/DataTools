@@ -26,6 +26,12 @@ def to_numeric(df, numeric_columns):
         df[col] = pd.to_numeric(df[col], errors='coerce')
     return df
 
+def replace_nan(df):
+    df = df.fillna(df.median(numeric_only= True))
+    
+    for col in df.select_dtypes(include=['object', 'category']).columns:
+        df[col] = df[col].fillna("Unknown")
+
 def clean_dataframe(df, numeric_columns=None, date_columns=None, binary_like_cols = None, cat_fill_value="Unknown", row_na_thresh=0.5):
     df = df.copy()
 
